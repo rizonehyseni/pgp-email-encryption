@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block content %}
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">PGP protocol simulation</p>
+    <h1>Secure email workflow</h1>
+    <p class="muted">
+      Generate key pairs, sign and encrypt mail, store it on the simulated
+      server, then decrypt and verify it from the recipient inbox.
+    </p>
+  </div>
+  <div class="heading-actions">
+    <a class="btn primary" href="{{ url_for('register_page') }}"
+      ><i class="fas fa-key"></i> Generate keys</a
+    >
+    <a class="btn secondary" href="{{ url_for('send_page') }}"
+      ><i class="fas fa-paper-plane"></i> Send email</a
+    >
+  </div>
+</section>
+
+<section class="stats-grid">
+  <article class="stat-card">
+    <span class="label">Public keys</span>
+    <strong>{{ public_keys|length }}</strong>
+  </article>
+  <article class="stat-card">
+    <span class="label">Private keys</span>
+    <strong>{{ secret_keys|length }}</strong>
+  </article>
+  <article class="stat-card">
+    <span class="label">Stored messages</span>
+    <strong>{{ recent_messages|length }}</strong>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-header">
+    <h2>Recent server activity</h2>
+    <a href="{{ url_for('receive_page') }}">Open inbox</a>
+  </div>
+  {% if recent_messages %}
+  <div class="message-list">
+    {% for message in recent_messages %}
+    <div class="message-row">
+      <div>
+        <strong>{{ message.subject }}</strong>
+        <span>{{ message.sender }} to {{ message.receiver }}</span>
+      </div>
+      <time>{{ message.timestamp }}</time>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty-state">No encrypted emails have reached the server yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
