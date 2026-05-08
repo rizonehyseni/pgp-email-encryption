@@ -80,3 +80,17 @@ Pastaj hap:
 ```text
 http://127.0.0.1:5000
 ```
+
+## Si funksionon web app
+
+### Dashboard
+
+Faqja kryesore tregon gjendjen e aplikacionit:
+
+- sa public keys jane ruajtur
+- sa private keys jane ruajtur
+- sa mesazhe jane ruajtur ne server
+- aktivitetet e fundit te serverit
+
+Nga kjo faqe mund te shkosh te gjenerimi i celesave, dergimi ose pranimi i
+email-eve.
