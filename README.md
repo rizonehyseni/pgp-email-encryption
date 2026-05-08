@@ -94,3 +94,21 @@ Faqja kryesore tregon gjendjen e aplikacionit:
 
 Nga kjo faqe mund te shkosh te gjenerimi i celesave, dergimi ose pranimi i
 email-eve.
+
+### Generate keys
+
+Kjo faqe krijon nje PGP key pair per nje perdorues.
+
+Fushat qe plotesohen jane:
+
+- `Name`: emri i perdoruesit, p.sh. `Arbena`
+- `Email`: email unik, p.sh. `arbena@example.com`
+- `Passphrase`: fjalekalim per mbrojtjen e private key
+
+Programi krijon:
+
+- public key, qe perdoret nga te tjeret per te enkriptuar mesazhe per kete user
+- private key, qe perdoret nga user-i per dekriptim dhe nenshkrim
+
+Nese email-i ekziston tashme, programi nuk krijon key te ri, por perdor key-in
+ekzistues.
