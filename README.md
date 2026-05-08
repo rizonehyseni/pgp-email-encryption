@@ -33,3 +33,29 @@ web/                 Flask app, templates dhe CSS/JS
 run_web.py           File per startimin e web app
 requirements.txt     Dependencies
 ```
+
+## Instalimi
+
+Hape terminalin ne folderin e projektit:
+
+```powershell
+cd C:\Users\Lenovo\Desktop\Pr3-siguri
+```
+
+Instalo dependencies:
+
+```powershell
+pip install -r requirements.txt
+```
+
+Nese `pip` ose `python` nuk njihen, provo:
+
+```powershell
+py -m pip install -r requirements.txt
+```
+
+Duhet gjithashtu te jete i instaluar GnuPG/Gpg4win. Mund ta kontrollosh me:
+
+```powershell
+gpg --version
+```
