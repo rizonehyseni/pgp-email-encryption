@@ -45,7 +45,7 @@ cd C:\Users\Lenovo\Desktop\Pr3-siguri
 Instalo dependencies:
 
 ```powershell
-pip install -r requirements.txt
+pip install -r restaquirements.txt
 ```
 
 Nese `pip` ose `python` nuk njihen, provo:
@@ -58,4 +58,25 @@ Duhet gjithashtu te jete i instaluar GnuPG/Gpg4win. Mund ta kontrollosh me:
 
 ```powershell
 gpg --version
+```
+
+## Startimi i web app
+
+Mos e hap projektin me **Go Live** ose portin `5500`, sepse ky projekt ka backend
+Python. Duhet te startohet me Flask:
+
+```powershell
+python run_web.py
+```
+
+ose:
+
+```powershell
+py run_web.py
+```
+
+Pastaj hap:
+
+```text
+http://127.0.0.1:5000
 ```
