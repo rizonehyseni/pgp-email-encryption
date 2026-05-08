@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PGP Secure Mail</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="{{ url_for('index') }}">
+          <span class="brand-icon"><i class="fas fa-lock"></i></span>
+          <span>
+            <strong>PGP Secure Mail</strong>
+            <small>Email encryption simulation</small>
+          </span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="{{ url_for('index') }}"
+            ><i class="fas fa-chart-line"></i> Dashboard</a
+          >
+          <a href="{{ url_for('register_page') }}"
+            ><i class="fas fa-key"></i> Generate keys</a
+          >
+          <a href="{{ url_for('send_page') }}"
+            ><i class="fas fa-paper-plane"></i> Send</a
+          >
+          <a href="{{ url_for('receive_page') }}"
+            ><i class="fas fa-inbox"></i> Receive</a
+          >
+        </nav>
+
+        <div class="session-box">
+          <span class="label">Current user</span>
+          <strong>{{ user.email if user else "Not selected" }}</strong>
+          {% if user %}
+          <form method="post" action="{{ url_for('logout') }}">
+            <button class="link-button" type="submit">Clear session</button>
+          </form>
+          {% endif %}
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %} {% block content %}{% endblock %}
+      </main>
+    </div>
+  </body>
+</html>
