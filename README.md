@@ -19,3 +19,17 @@ Projekti mund te testohet ne dy menyra:
 - `python-gnupg` per lidhjen mes Python dhe GPG
 - Rich dhe Questionary per console interface
 - Loguru per log files
+
+## Struktura e projektit
+
+```text
+client/              Klienti ne console
+core/                Logjika kryesore per PGP dhe modele te mesazhit
+data/                Mesazhet e ruajtura nga serveri i simuluar
+keys/                Celesat PGP te ruajtur lokalisht
+logs/                Log files
+server/              Serveri i simuluar i email-eve
+web/                 Flask app, templates dhe CSS/JS
+run_web.py           File per startimin e web app
+requirements.txt     Dependencies
+```
