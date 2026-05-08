@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block content %}
+<section class="page-heading compact">
+  <div>
+    <p class="eyebrow">Key management</p>
+    <h1>Generate a PGP key pair</h1>
+    <p class="muted">
+      The public key is used by senders to encrypt mail. The private key and
+      passphrase are required to decrypt and verify it.
+    </p>
+  </div>
+</section>
+
+<section class="panel form-panel">
+  <form method="post" class="stacked-form">
+    <label>
+      Email
+      <input
+        type="email"
+        name="email"
+        placeholder="alice@example.com"
+        required
+      />
+    </label>
+
+    <label>
+      Full name
+      <input type="text" name="name" placeholder="Alice Example" required />
+    </label>
+
+    <label>
+      Passphrase
+      <input
+        type="password"
+        name="passphrase"
+        placeholder="Use a memorable secret"
+        required
+      />
+    </label>
+
+    <button type="submit" class="btn primary full-width">
+      <i class="fas fa-key"></i> Generate key pair
+    </button>
+  </form>
+</section>
+{% endblock %}
