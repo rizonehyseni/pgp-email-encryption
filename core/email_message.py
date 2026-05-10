@@ -17,3 +17,6 @@ class EmailMessage:
     def __post_init__(self):
         if self.timestamp is None:
             self.timestamp = datetime.now()
+
+    def __str__(self):
+        return f"From: {self.sender} | To: {self.receiver} | Subject: {self.subject}"        
