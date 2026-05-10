@@ -39,13 +39,13 @@ requirements.txt     Dependencies
 Hape terminalin ne folderin e projektit:
 
 ```powershell
-cd C:\Users\Lenovo\Desktop\Pr3-siguri
+cd C:\Users\Lenovo\Desktop\pgp-email-encryption
 ```
 
 Instalo dependencies:
 
 ```powershell
-pip install -r restaquirements.txt
+pip install -r requirements.txt
 ```
 
 Nese `pip` ose `python` nuk njihen, provo:

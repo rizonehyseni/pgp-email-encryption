@@ -1,0 +1,111 @@
+{% extends "base.html" %} {% block content %}
+<section class="page-heading compact">
+  <div>
+    <p class="eyebrow">Decrypt and verify</p>
+    <h1>Recipient inbox</h1>
+    <p class="muted">
+      Choose a stored encrypted email, enter the recipient passphrase, and
+      verify the sender signature.
+    </p>
+  </div>
+</section>
+
+<section class="panel form-panel">
+  <form method="get" class="inline-form">
+    <label>
+      Recipient email
+      <input
+        type="email"
+        name="email"
+        value="{{ email }}"
+        placeholder="bob@example.com"
+        required
+      />
+    </label>
+    <button class="btn secondary" type="submit">
+      <i class="fas fa-search"></i> Load inbox
+    </button>
+  </form>
+</section>
+
+<section class="two-column">
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Messages</h2>
+      <span class="pill">{{ messages|length }} found</span>
+    </div>
+
+    {% if messages %}
+    <div class="message-list">
+      {% for message in messages %}
+      <form method="post" class="message-row selectable">
+        <input type="hidden" name="email" value="{{ email }}" />
+        <input type="hidden" name="message_id" value="{{ message.id }}" />
+        <div>
+          <strong>{{ message.subject }}</strong>
+          <span>{{ message.sender }} | {{ message.timestamp }}</span>
+        </div>
+        <label class="mini-field">
+          Passphrase
+          <input
+            type="password"
+            name="passphrase"
+            placeholder="Recipient secret"
+          />
+        </label>
+        <button class="icon-button" type="submit" title="Decrypt message">
+          <i class="fas fa-unlock"></i>
+        </button>
+      </form>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state">
+      Load an inbox to see encrypted emails for that recipient.
+    </p>
+    {% endif %}
+  </div>
+
+  <div class="panel output-panel">
+    <div class="panel-header">
+      <h2>Decrypted message</h2>
+      {% if decrypted_result %}
+      <span
+        class="pill {{ 'success' if decrypted_result.verified else 'warning' }}"
+      >
+        {{ "Verified" if decrypted_result.verified else "Decrypted" }}
+      </span>
+      {% endif %}
+    </div>
+
+    {% if decrypted_result and selected_message %}
+    <dl class="details">
+      <div>
+        <dt>From</dt>
+        <dd>{{ selected_message.sender }}</dd>
+      </div>
+      <div>
+        <dt>To</dt>
+        <dd>{{ selected_message.receiver }}</dd>
+      </div>
+      <div>
+        <dt>Subject</dt>
+        <dd>{{ selected_message.subject }}</dd>
+      </div>
+      <div>
+        <dt>Signature</dt>
+        <dd>
+          {{ decrypted_result.username or decrypted_result.key_id or "No
+          signature metadata returned" }}
+        </dd>
+      </div>
+    </dl>
+    <pre class="plain-message">{{ decrypted_result.plaintext }}</pre>
+    {% else %}
+    <p class="empty-state">
+      Decrypted content and signature status will appear here.
+    </p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

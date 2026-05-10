@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block content %}
+<section class="page-heading compact">
+  <div>
+    <p class="eyebrow">Encrypt and sign</p>
+    <h1>Send encrypted email</h1>
+    <p class="muted">
+      The message is signed with the sender private key and encrypted with the
+      recipient public key before it reaches the server.
+    </p>
+  </div>
+</section>
+
+<section class="two-column">
+  <div class="panel form-panel">
+    <form method="post" class="stacked-form">
+      {% if not user %}
+      <label>
+        Sender email
+        <input
+          type="email"
+          name="sender"
+          placeholder="alice@example.com"
+          required
+        />
+      </label>
+      {% endif %}
+
+      <label>
+        Recipient email
+        <input
+          type="email"
+          name="receiver"
+          placeholder="bob@example.com"
+          required
+        />
+      </label>
+
+      <label>
+        Subject
+        <input
+          type="text"
+          name="subject"
+          placeholder="Project update"
+          required
+        />
+      </label>
+
+      <label>
+        Message
+        <textarea
+          name="body"
+          placeholder="Write the email content..."
+          required
+        ></textarea>
+      </label>
+
+      <label>
+        Sender passphrase
+        <input
+          type="password"
+          name="passphrase"
+          placeholder="Required when the private key has one"
+        />
+      </label>
+
+      <button type="submit" class="btn primary full-width">
+        <i class="fas fa-lock"></i> Encrypt and send
+      </button>
+    </form>
+  </div>
+
+  <div class="panel output-panel">
+    <div class="panel-header">
+      <h2>Encrypted output</h2>
+      {% if sent_message %}<span class="pill">Stored</span>{% endif %}
+    </div>
+    {% if encrypted_message %}
+    <pre class="pgp-block">{{ encrypted_message }}</pre>
+    {% else %}
+    <p class="empty-state">Encrypted payload will appear here after sending.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
