@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 
 @dataclass
 class EmailMessage:
@@ -8,7 +9,9 @@ class EmailMessage:
     subject: str
     body: str
     timestamp: datetime = None
+    encrypted_body: Optional[bytes] = None
+    signature: Optional[bytes] = None
 
-def __post_init__(self):
-    if self.timestamp is None:
-        self.timestamp = datetime.now()
+    def __post_init__(self):
+        if self.timestamp is None:
+            self.timestamp = datetime.now()
