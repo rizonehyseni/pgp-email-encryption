@@ -58,3 +58,18 @@ def list_public_keys(self):
 
     def find_public_key(self, email_or_fingerprint: str):
         return self._find_key(email_or_fingerprint, secret=False)
+def find_secret_key(self, email_or_fingerprint: str):
+        return self._find_key(email_or_fingerprint, secret=True)
+
+    def _find_key(self, email_or_fingerprint: str, secret: bool):
+        query = email_or_fingerprint.strip().lower()
+        if not query:
+            return None
+
+        for key in self.gpg.list_keys(secret=secret):
+            fingerprint = key.get("fingerprint", "")
+            uids = " ".join(key.get("uids", [])).lower()
+            if query == fingerprint.lower() or query in uids:
+                return key
+
+        return None
