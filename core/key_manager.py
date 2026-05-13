@@ -27,3 +27,16 @@ class KeyManager:
             "key_type": "RSA",
             "key_length": 2048,
         }
+         key_options["passphrase"] = passphrase
+
+        input_data = self.gpg.gen_key_input(**key_options)
+
+        key = self.gpg.gen_key(input_data)
+
+        if not key or not key.fingerprint:
+            generated = self.find_public_key(email)
+            if generated:
+                return generated["fingerprint"]
+            return self._generate_key_pair_with_gpg(email=email, name=name, passphrase=passphrase)
+
+        return key.fingerprint
