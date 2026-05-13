@@ -50,3 +50,11 @@ class KeyManager:
         if not result.count:
             raise ValueError("No valid public key was imported.")
         return result.fingerprints
+def list_public_keys(self):
+        return self.gpg.list_keys()
+
+    def list_secret_keys(self):
+        return self.gpg.list_keys(secret=True)
+
+    def find_public_key(self, email_or_fingerprint: str):
+        return self._find_key(email_or_fingerprint, secret=False)
