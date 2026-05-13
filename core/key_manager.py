@@ -40,3 +40,8 @@ class KeyManager:
             return self._generate_key_pair_with_gpg(email=email, name=name, passphrase=passphrase)
 
         return key.fingerprint
+    def export_public_key(self, email_or_fingerprint: str) -> str:
+        key = self.find_public_key(email_or_fingerprint)
+        if not key:
+            raise ValueError(f"No public key found for {email_or_fingerprint}")
+        return self.gpg.export_keys(key["fingerprint"])
