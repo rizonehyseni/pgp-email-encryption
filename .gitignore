@@ -26,4 +26,4 @@ logs/*.log
 Thumbs.db
 
 # Environment variables
-.env
+.env.idea/
