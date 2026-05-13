@@ -45,3 +45,8 @@ class KeyManager:
         if not key:
             raise ValueError(f"No public key found for {email_or_fingerprint}")
         return self.gpg.export_keys(key["fingerprint"])
+ def import_public_key(self, armored_key: str):
+        result = self.gpg.import_keys(armored_key)
+        if not result.count:
+            raise ValueError("No valid public key was imported.")
+        return result.fingerprints
