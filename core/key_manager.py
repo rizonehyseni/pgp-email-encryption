@@ -21,3 +21,9 @@ class KeyManager:
         existing = self.find_public_key(email)
         if existing:
             return existing["fingerprint"]
+        key_options = {
+            "name_real": name.strip(),
+            "name_email": email.strip(),
+            "key_type": "RSA",
+            "key_length": 2048,
+        }
