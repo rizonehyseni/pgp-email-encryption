@@ -73,3 +73,21 @@ def find_secret_key(self, email_or_fingerprint: str):
                 return key
 
         return None
+     def _generate_key_pair_with_gpg(self, email: str, name: str, passphrase: str) -> str:
+        self._cleanup_stale_locks()
+        user_id = f"{name.strip()} <{email.strip()}>"
+        command = [
+            self.gpg_binary,
+            "--homedir",
+            str(self.keys_dir),
+            "--batch",
+            "--pinentry-mode",
+            "loopback",
+            "--passphrase",
+            passphrase,
+            "--quick-generate-key",
+            user_id,
+            "rsa2048",
+            "default",
+            "0",
+        ]
