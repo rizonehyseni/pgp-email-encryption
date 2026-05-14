@@ -91,3 +91,10 @@ def find_secret_key(self, email_or_fingerprint: str):
             "default",
             "0",
         ]
+         result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+        if result.returncode != 0:
+            generated = self.find_public_key(email)
+            if generated and "already exists" in (result.stderr or result.stdout):
+                return generated["fingerprint"]
+            details = (result.stderr or result.stdout or "").strip()
+            raise ValueError(f"Key generation failed: {details or 'GnuPG returned an unknown error.'}")
