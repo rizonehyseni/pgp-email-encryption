@@ -111,3 +111,17 @@ def find_secret_key(self, email_or_fingerprint: str):
                     runtime_file.unlink()
                 except OSError:
                     continue
+                 @staticmethod
+    def _resolve_gpg_binary() -> str:
+        candidates = [
+            r"C:\Program Files\GnuPG\bin\gpg.exe",
+            r"C:\Program Files (x86)\GnuPG\bin\gpg.exe",
+            r"C:\Program Files\Gpg4win\..\GnuPG\bin\gpg.exe",
+            shutil.which("gpg"),
+        ]
+
+        for candidate in candidates:
+            if candidate and Path(candidate).exists():
+                return str(Path(candidate).resolve())
+
+        return "gpg"
