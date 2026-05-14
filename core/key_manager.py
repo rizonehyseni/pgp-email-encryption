@@ -98,3 +98,8 @@ def find_secret_key(self, email_or_fingerprint: str):
                 return generated["fingerprint"]
             details = (result.stderr or result.stdout or "").strip()
             raise ValueError(f"Key generation failed: {details or 'GnuPG returned an unknown error.'}")
+         generated = self.find_public_key(email)
+        if not generated:
+            raise ValueError("Key generation finished, but the new key could not be found.")
+
+        return generated["fingerprint"]
