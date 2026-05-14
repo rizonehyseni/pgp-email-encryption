@@ -103,3 +103,11 @@ def find_secret_key(self, email_or_fingerprint: str):
             raise ValueError("Key generation finished, but the new key could not be found.")
 
         return generated["fingerprint"]
+    def _cleanup_stale_locks(self):
+        cleanup_patterns = ["*.lock", "S.gpg-agent*", "S.scdaemon"]
+        for pattern in cleanup_patterns:
+            for runtime_file in self.keys_dir.glob(pattern):
+                try:
+                    runtime_file.unlink()
+                except OSError:
+                    continue
