@@ -42,3 +42,28 @@ class PGPClientCLI:
             console.print(f"[dim]Fingerprint: {fingerprint}[/dim]")
         else:
             console.print("[red]Registration failed. Check logs/client.log for details.[/red]")
+    def send_email(self):
+        if not self.client or not self.client.email:
+            console.print("[red]Register first so the client has a private key for signing.[/red]")
+            return
+
+        receiver = Prompt.ask("Recipient email")
+        subject = Prompt.ask("Subject")
+
+        console.print("Write the message. Submit an empty line to finish.")
+
+        lines = []
+
+        while True:
+            line = console.input("> ")
+
+            if line == "":
+                break
+
+            lines.append(line)
+
+        body = "\n".join(lines)
+
+        passphrase = Prompt.ask("Sender passphrase", password=True)
+
+        self.client.send_email(receiver, subject, body, passphrase)
