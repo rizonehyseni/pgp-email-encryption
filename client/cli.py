@@ -29,3 +29,16 @@ class PGPClientCLI:
             elif choice == "4":
                 console.print("[green]Goodbye. Stay secure.[/green]")
                 break
+    def register_user(self):
+        email = Prompt.ask("Email")
+        name = Prompt.ask("Full name")
+        passphrase = Prompt.ask("Passphrase", password=True)
+
+        self.client = PGPClient()
+        fingerprint = self.client.register_user(email, name, passphrase)
+
+        if fingerprint:
+            console.print(f"[bold green]Registered {email}[/bold green]")
+            console.print(f"[dim]Fingerprint: {fingerprint}[/dim]")
+        else:
+            console.print("[red]Registration failed. Check logs/client.log for details.[/red]")
