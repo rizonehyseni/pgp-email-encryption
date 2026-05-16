@@ -73,3 +73,55 @@ def find_secret_key(self, email_or_fingerprint: str):
                 return key
 
         return None
+     def _generate_key_pair_with_gpg(self, email: str, name: str, passphrase: str) -> str:
+        self._cleanup_stale_locks()
+        user_id = f"{name.strip()} <{email.strip()}>"
+        command = [
+            self.gpg_binary,
+            "--homedir",
+            str(self.keys_dir),
+            "--batch",
+            "--pinentry-mode",
+            "loopback",
+            "--passphrase",
+            passphrase,
+            "--quick-generate-key",
+            user_id,
+            "rsa2048",
+            "default",
+            "0",
+        ]
+         result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+        if result.returncode != 0:
+            generated = self.find_public_key(email)
+            if generated and "already exists" in (result.stderr or result.stdout):
+                return generated["fingerprint"]
+            details = (result.stderr or result.stdout or "").strip()
+            raise ValueError(f"Key generation failed: {details or 'GnuPG returned an unknown error.'}")
+         generated = self.find_public_key(email)
+        if not generated:
+            raise ValueError("Key generation finished, but the new key could not be found.")
+
+        return generated["fingerprint"]
+    def _cleanup_stale_locks(self):
+        cleanup_patterns = ["*.lock", "S.gpg-agent*", "S.scdaemon"]
+        for pattern in cleanup_patterns:
+            for runtime_file in self.keys_dir.glob(pattern):
+                try:
+                    runtime_file.unlink()
+                except OSError:
+                    continue
+                 @staticmethod
+    def _resolve_gpg_binary() -> str:
+        candidates = [
+            r"C:\Program Files\GnuPG\bin\gpg.exe",
+            r"C:\Program Files (x86)\GnuPG\bin\gpg.exe",
+            r"C:\Program Files\Gpg4win\..\GnuPG\bin\gpg.exe",
+            shutil.which("gpg"),
+        ]
+
+        for candidate in candidates:
+            if candidate and Path(candidate).exists():
+                return str(Path(candidate).resolve())
+
+        return "gpg"
