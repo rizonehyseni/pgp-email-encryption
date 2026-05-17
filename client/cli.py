@@ -67,3 +67,25 @@ class PGPClientCLI:
         passphrase = Prompt.ask("Sender passphrase", password=True)
 
         self.client.send_email(receiver, subject, body, passphrase)
+
+    def receive_email(self):
+        if not self.client or not self.client.email:
+            email = Prompt.ask("Email to open")
+            self.client = PGPClient(email=email)
+
+        passphrase = Prompt.ask("Recipient passphrase", password=True)
+
+        messages = self.client.receive_email(passphrase)
+
+        if not messages:
+            console.print("[yellow]No decryptable messages found.[/yellow]")
+            return
+
+        for message, result in messages:
+            status = "verified" if result.verified else "decrypted"
+
+            console.print(
+                f"\n[bold]{message['subject']}[/bold] from {message['sender']} ({status})"
+            )
+
+            console.print(result.plaintext)
