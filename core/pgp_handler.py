@@ -95,6 +95,7 @@ class PGPHandler:
             r"C:\Program Files\GnuPG\bin\gpg.exe",
             r"C:\Program Files (x86)\GnuPG\bin\gpg.exe",
             r"C:\Program Files\Gpg4win\..\GnuPG\bin\gpg.exe",
+            r"C:\Program Files\Git\usr\bin\gpg.exe",
             shutil.which("gpg"),
         ]
 
