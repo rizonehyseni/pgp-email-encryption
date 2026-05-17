@@ -2,6 +2,8 @@ from pathlib import Path
 import shutil
 import subprocess
 import gnupg
+
+
 class KeyManager:
     def __init__(self, keys_dir: str = "keys"):
         self.keys_dir = Path(keys_dir).resolve()
@@ -12,7 +14,8 @@ class KeyManager:
             gnupghome=str(self.keys_dir),
             options=["--pinentry-mode", "loopback"],
         )
-        def generate_key_pair(self, email: str, name: str, passphrase: str = "") -> str:
+
+    def generate_key_pair(self, email: str, name: str, passphrase: str = "") -> str:
         if not passphrase:
             raise ValueError("A passphrase is required to protect the private key.")
 
@@ -27,7 +30,7 @@ class KeyManager:
             "key_type": "RSA",
             "key_length": 2048,
         }
-         key_options["passphrase"] = passphrase
+        key_options["passphrase"] = passphrase
 
         input_data = self.gpg.gen_key_input(**key_options)
 
@@ -40,17 +43,20 @@ class KeyManager:
             return self._generate_key_pair_with_gpg(email=email, name=name, passphrase=passphrase)
 
         return key.fingerprint
+
     def export_public_key(self, email_or_fingerprint: str) -> str:
         key = self.find_public_key(email_or_fingerprint)
         if not key:
             raise ValueError(f"No public key found for {email_or_fingerprint}")
         return self.gpg.export_keys(key["fingerprint"])
- def import_public_key(self, armored_key: str):
+
+    def import_public_key(self, armored_key: str):
         result = self.gpg.import_keys(armored_key)
         if not result.count:
             raise ValueError("No valid public key was imported.")
         return result.fingerprints
-def list_public_keys(self):
+
+    def list_public_keys(self):
         return self.gpg.list_keys()
 
     def list_secret_keys(self):
@@ -58,7 +64,8 @@ def list_public_keys(self):
 
     def find_public_key(self, email_or_fingerprint: str):
         return self._find_key(email_or_fingerprint, secret=False)
-def find_secret_key(self, email_or_fingerprint: str):
+
+    def find_secret_key(self, email_or_fingerprint: str):
         return self._find_key(email_or_fingerprint, secret=True)
 
     def _find_key(self, email_or_fingerprint: str, secret: bool):
@@ -73,7 +80,8 @@ def find_secret_key(self, email_or_fingerprint: str):
                 return key
 
         return None
-     def _generate_key_pair_with_gpg(self, email: str, name: str, passphrase: str) -> str:
+
+    def _generate_key_pair_with_gpg(self, email: str, name: str, passphrase: str) -> str:
         self._cleanup_stale_locks()
         user_id = f"{name.strip()} <{email.strip()}>"
         command = [
@@ -91,18 +99,19 @@ def find_secret_key(self, email_or_fingerprint: str):
             "default",
             "0",
         ]
-         result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
             generated = self.find_public_key(email)
             if generated and "already exists" in (result.stderr or result.stdout):
                 return generated["fingerprint"]
             details = (result.stderr or result.stdout or "").strip()
             raise ValueError(f"Key generation failed: {details or 'GnuPG returned an unknown error.'}")
-         generated = self.find_public_key(email)
+        generated = self.find_public_key(email)
         if not generated:
             raise ValueError("Key generation finished, but the new key could not be found.")
 
         return generated["fingerprint"]
+
     def _cleanup_stale_locks(self):
         cleanup_patterns = ["*.lock", "S.gpg-agent*", "S.scdaemon"]
         for pattern in cleanup_patterns:
@@ -111,12 +120,14 @@ def find_secret_key(self, email_or_fingerprint: str):
                     runtime_file.unlink()
                 except OSError:
                     continue
-                 @staticmethod
+
+    @staticmethod
     def _resolve_gpg_binary() -> str:
         candidates = [
             r"C:\Program Files\GnuPG\bin\gpg.exe",
             r"C:\Program Files (x86)\GnuPG\bin\gpg.exe",
             r"C:\Program Files\Gpg4win\..\GnuPG\bin\gpg.exe",
+            r"C:\Program Files\Git\usr\bin\gpg.exe",
             shutil.which("gpg"),
         ]
 
